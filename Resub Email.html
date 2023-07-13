@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            .box{
+               display: flex;
+               background-color: white;
+            }
+
+            .container {
+              border: 2px solid;
+              margin: auto;
+              padding: 10px;
+              text-align: center;
+            }
+
+            .button {
+              background: transparent;
+              border: 2px solid;
+              padding: 10px 40px;
+              font-size: 15px;
+              text-align: center;
+              margin: 20px 10px 10px 0;
+              font-weight: bold;
+              border-color: black;
+              color: black;
+              width: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class ="box">
+            <div class="container">
+                <h3>Email Subscription</h3>
+                <h4>We found you unsubscribe the email, would you like to resubscribe again?</h4>
+                <button class="button" onclick="resub()">Resubscribe</button>
+                <button class="button" onclick="closeBox()">Cancel</button>
+            </div>
+        </div>
+        <script>
+            function resub(){
+                if (window.CleverTap) { 
+                    //update subscription
+                    var props = {'MSG-email': true};
+                    CleverTap.pushProfile(JSON.stringify(props));          
+                    //raise event
+                    CleverTap.pushEvent("Resubscribe Email");
+                }
+                else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.clevertap) { 
+                    //update subscription
+                    const props_profile = {'MSG-email': true};
+                    const message_profile = { action:'profilePush', properties: props_profile };
+                    window.webkit.messageHandlers.clevertap.postMessage(message_profile);        
+                    //raise event
+                    var props = {};
+                    var message = { action:'recordEventWithProps', event:'Resubscribe Email',properties:props}; 
+                    window.webkit.messageHandlers.clevertap.postMessage(message);
+                }
+                closeBox();
+            }
+            function closeBox(){
+                window.location.replace("wzrk://thisisadummylink");
+            }
+        </script>
+    </body>
+</html>
