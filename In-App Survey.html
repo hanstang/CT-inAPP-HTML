@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
+  <title>In-App Survey</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+      color: #754434;
+      font-size: 24px;
+      margin:20px 0;
+    }
+    h2 {
+      text-align: center;
+      color: #754434;
+      font-size: 20px;
+      margin: 15px 0;
+    }
+    .rating-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .rating-option {
+      margin: 10px 0;
+    }
+    .rating-option input[type="radio"] {
+      display: none;
+    }
+    .rating-option label {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #f6e8d9;
+      border: 1px solid #e1cfc0;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #754434;
+      font-size: 16px;
+    }
+    .rating-option input[type="radio"]:checked + label {
+      background-color: #754434;
+      color: #ffffff;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #754434;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hai! Thanks for using my apps.</h1>
+  <h2>Rate Your Experience</h2>
+  <div class="rating-container">
+    <div class="rating-option">
+      <input type="radio" name="rating" id="great" value="great">
+      <label for="great">Great</label>
+    </div>
+    <div class="rating-option">
+      <input type="radio" name="rating" id="average" value="average">
+      <label for="average">Average</label>
+    </div>
+    <div class="rating-option">
+      <input type="radio" name="rating" id="disappointing" value="disappointing">
+      <label for="disappointing">Disappointing</label>
+    </div>
+  </div>
+  <button onclick="submitRating()">Submit</button>
+  
+
+  <script>
+    function submitRating() {
+      var selectedOption = document.querySelector('input[name="rating"]:checked');
+      if (selectedOption) {
+        var rating = selectedOption.value;
+        // You can perform further actions with the rating value, such as sending it to the server or displaying a thank you message.
+        console.log(rating);
+        // send value as Event
+        var props1 = {ratingValue: rating};
+        var message = { action:'recordEventWithProps', event:'Submit Rating', props: props1, properties:props1};
+        if (window.CleverTap) { 
+            //raise from Android
+            CleverTap.pushEvent("Submit Rating",JSON.stringify(props1)); 
+        }
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.clevertap) { 
+            //raise from iOS
+            window.webkit.messageHandlers.clevertap.postMessage(message);
+        }
+        Swal.fire({
+            title: 'Thank you for your feedback',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            confirmButtonColor: "#754434",
+            confirmButtonText: "OK", 
+          }).then((result) => {
+              if (result.isConfirmed) {
+                //close the in app
+                window.location.replace("wzrk://thisisadummylink"); 
+              }
+            })
+      } 
+    }
+  </script>
+</body>
+</html>
