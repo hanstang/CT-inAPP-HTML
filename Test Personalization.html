@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function fetchData() {
+const container = document.getElementById("data-container");
+//container.innerHTML = '';
+
+if (window.CleverTap) {
+// Call Android interface 
+container.textContent += "Android inApp";
+//CTID = CleverTap.getSdkVersion();
+//AppIdentity = CleverTap.getProperty("Identity");
+//AppEmail = CleverTap.profile.getAttribute("Email");
+//container.textContent += CTID + " - " + AppIdentity + " - " + AppEmail;
+//container.textContent += CTID;
+}
+const userID = '
+
+@Profile - Identity | default: "
+
+x
+
+"
+
+'; 
+if (userID == 'kwdel1'){
+container.textContent += " Android ID Match";
+}
+
+}
+function CloseBtn() {
+if (window.CleverTap) {
+CleverTap.dismissInAppNotification()
+}
+}
+// Call the fetchData function when the page loads
+window.onload = fetchData;
+</script>
+</head>
+<body bgcolor="white"> 
+<h1>Data from SDK Testing URL</h1>
+<div id="data-container">
+hi @Profile - Identity | default: "no-identity"
+<BR>
+Hans Testing
+</div>
+<button onclick="CloseBtn">Close</button>
+</body>
+</html>
